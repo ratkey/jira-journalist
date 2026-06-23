@@ -30,10 +30,13 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("csv_path", type=Path, help="Path to the Jira CSV export.")
     parser.add_argument(
-        "--output-dir",
+        "--output",
         type=Path,
         default=Path("reports/output"),
-        help="Directory where the Markdown report is written (default: %(default)s).",
+        help=(
+            "Base output directory. Files are written under "
+            "<output>/<window-end>/ (default: %(default)s)."
+        ),
     )
     parser.add_argument(
         "--start",
@@ -94,18 +97,16 @@ def main(argv: list[str] | None = None) -> int:
         show_due_date=not args.hide_due_date,
     )
 
-    args.output_dir.mkdir(parents=True, exist_ok=True)
-    stem = (
-        f"report_{window_start.strftime(_DATE_FMT)}_to_"
-        f"{window_end.strftime(_DATE_FMT)}"
-    )
+    output_dir = args.output / window_end.strftime(_DATE_FMT)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    stem = f"report_{window_start.strftime(_DATE_FMT)}_to_{window_end.strftime(_DATE_FMT)}"
 
-    markdown_path = args.output_dir / f"{stem}.md"
+    markdown_path = output_dir / f"{stem}.md"
     markdown_path.write_text(markdown_report.render(data, options), encoding="utf-8")
     print(f"Report written to {markdown_path}")
 
     if not args.no_mail:
-        mail_path = args.output_dir / f"{stem}.mail.html"
+        mail_path = output_dir / f"{stem}.mail.html"
         mail_path.write_text(mail_report.render(data, options), encoding="utf-8")
         print(f"Mail-friendly report written to {mail_path}")
 

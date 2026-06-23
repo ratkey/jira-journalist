@@ -23,7 +23,7 @@ Por defecto genera un reporte de los ultimos 7 dias en `reports/output/`.
 
 ## Opciones
 
-- `--output-dir RUTA` — donde escribir el reporte (default: `reports/output`)
+- `--output RUTA` — directorio base de salida; los archivos se escriben en `<output>/<fecha-fin>/` (default: `reports/output`)
 - `--start YYYY-MM-DD` / `--end YYYY-MM-DD` — periodo explicito del reporte
 - `--days N` — tamano del periodo en dias cuando no se da `--start` (default: 7)
 - `--show-type` — muestra el tipo de incidencia (Historia/Error) por ticket
@@ -37,8 +37,8 @@ Por defecto genera un reporte de los ultimos 7 dias en `reports/output/`.
 python3 generate_report.py reports/haika_2026-06-23.csv --start 2026-06-01 --end 2026-06-23
 ```
 
-Genera `reports/output/report_2026-06-01_to_2026-06-23.md` y su version
-`.mail.html` correspondiente.
+Genera `reports/output/2026-06-23/report_2026-06-01_to_2026-06-23.md` y su
+version `.mail.html` correspondiente.
 
 ## Columnas esperadas en el CSV
 
