@@ -62,9 +62,9 @@ def build_parser() -> argparse.ArgumentParser:
         help="Include the Jira status next to each ticket. Off by default.",
     )
     parser.add_argument(
-        "--show-due-date",
+        "--hide-due-date",
         action="store_true",
-        help="Include the due date next to each ticket. Off by default.",
+        help="Hide the due date next to each ticket. Shown by default.",
     )
     parser.add_argument(
         "--no-mail",
@@ -91,7 +91,7 @@ def main(argv: list[str] | None = None) -> int:
     options = DisplayOptions(
         show_type=args.show_type,
         show_status=args.show_status,
-        show_due_date=args.show_due_date,
+        show_due_date=not args.hide_due_date,
     )
 
     args.output_dir.mkdir(parents=True, exist_ok=True)

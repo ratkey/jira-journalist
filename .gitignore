@@ -1,2 +1,8 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+jira_report/__pycache__/
+*.py[codz]
+*$py.class
+
 venv/
 reports/

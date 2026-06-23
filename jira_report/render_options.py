@@ -12,11 +12,15 @@ _DATE_FMT = "%Y-%m-%d"
 
 @dataclass(frozen=True, slots=True)
 class DisplayOptions:
-    """Toggles for the optional per-ticket detail fields. All off by default."""
+    """Toggles for the optional per-ticket detail fields.
+
+    `show_type` and `show_status` are off by default; `show_due_date` is on
+    by default (it can be turned off with --hide-due-date).
+    """
 
     show_type: bool = False
     show_status: bool = False
-    show_due_date: bool = False
+    show_due_date: bool = True
 
     @property
     def any_enabled(self) -> bool:

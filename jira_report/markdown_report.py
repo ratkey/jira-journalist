@@ -31,17 +31,18 @@ def _render_in_progress(data: ReportData, options: DisplayOptions) -> list[str]:
     if not data.in_progress_by_assignee:
         return [*lines, "_Sin tickets en curso en este periodo._", ""]
 
-    # Due date is always shown for in-progress tickets, so it is excluded
-    # here to avoid a duplicate when --show-due-date is also passed.
+    # Due date is rendered as `extra_details` here, so it is excluded from
+    # `ticket_details` to avoid a duplicate.
     remaining_options = replace(options, show_due_date=False)
 
     for assignee, tickets in data.in_progress_by_assignee.items():
         lines.append(f"### {assignee}")
         lines.append("")
         for ticket in tickets:
+            due_date = due_date_value(ticket) if options.show_due_date else None
             extra = [
                 value
-                for value in (progress_value(ticket, data.window_end), due_date_value(ticket))
+                for value in (progress_value(ticket, data.window_end), due_date)
                 if value is not None
             ]
             lines.append(_ticket_line(ticket, remaining_options, extra))
