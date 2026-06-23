@@ -35,12 +35,12 @@ def ticket_details(ticket: Ticket, options: DisplayOptions) -> list[str]:
     if options.show_status:
         details.append(f"estado: {ticket.status}")
     if options.show_due_date and ticket.due_date is not None:
-        details.append(f"fecha de vencimiento: {ticket.due_date.strftime(_DATE_FMT)}")
+        details.append(f"{ticket.due_date.strftime(_DATE_FMT)}")
     return details
 
 
 def progress_value(ticket: Ticket, as_of: datetime) -> str | None:
-    """"65%" for an in-progress ticket, or None if not computable."""
+    """ "65%" for an in-progress ticket, or None if not computable."""
     progress = ticket.progress(as_of)
     if progress is None:
         return None
@@ -48,7 +48,7 @@ def progress_value(ticket: Ticket, as_of: datetime) -> str | None:
 
 
 def due_date_value(ticket: Ticket) -> str | None:
-    """"fecha de vencimiento: 2026-06-28", or None if the ticket has no due date."""
+    """ "fecha de vencimiento: 2026-06-28", or None if the ticket has no due date."""
     if ticket.due_date is None:
         return None
-    return f"fecha de vencimiento: {ticket.due_date.strftime(_DATE_FMT)}"
+    return f"{ticket.due_date.strftime(_DATE_FMT)}"

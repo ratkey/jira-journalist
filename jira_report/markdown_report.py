@@ -53,7 +53,7 @@ def _render_in_progress(data: ReportData, options: DisplayOptions) -> list[str]:
 def _render_done(data: ReportData, options: DisplayOptions) -> list[str]:
     lines = ["## Terminados", ""]
     sections = (
-        (IssueType.FEATURE, "Historias"),
+        (IssueType.FEATURE, "Funcionalidades"),
         (IssueType.BUG, "Errores"),
     )
 
@@ -78,6 +78,12 @@ def render(data: ReportData, options: DisplayOptions = DisplayOptions()) -> str:
     done_count = sum(len(t) for t in data.done_by_type.values())
 
     lines = [
+        "---",
+        f"created: {data.window_end.strftime('%Y-%m-%d')}",
+        "tags:",
+        "  - project/haika/reporte",
+        "---",
+        "",
         "# Reporte de Jira",
         "",
         f"Periodo: {data.window_start.strftime('%Y-%m-%d')} a "

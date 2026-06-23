@@ -67,7 +67,7 @@ def _render_in_progress(data: ReportData, options: DisplayOptions) -> list[str]:
 def _render_done(data: ReportData, options: DisplayOptions) -> list[str]:
     lines = [f"<h2 {_H2}>Terminados</h2>"]
     sections = (
-        (IssueType.FEATURE, "Historias"),
+        (IssueType.FEATURE, "Funcionalidades"),
         (IssueType.BUG, "Errores"),
     )
 
