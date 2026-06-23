@@ -23,13 +23,13 @@ Por defecto genera un reporte de los ultimos 7 dias en `reports/output/`.
 
 ## Opciones
 
-- `--output RUTA` — directorio base de salida; los archivos se escriben en `<output>/<fecha-fin>/` (default: `reports/output`)
-- `--start YYYY-MM-DD` / `--end YYYY-MM-DD` — periodo explicito del reporte
-- `--days N` — tamano del periodo en dias cuando no se da `--start` (default: 7)
-- `--show-type` — muestra el tipo de incidencia (Historia/Error) por ticket
-- `--show-status` — muestra el estado de Jira por ticket
-- `--hide-due-date` — oculta la fecha de vencimiento por ticket (se muestra por defecto)
-- `--no-mail` — omite la generacion de la version `.mail.html`
+- `-o, --output RUTA` — directorio base de salida; los archivos se escriben en `<output>/<fecha-fin>/` (default: `reports/output`)
+- `-s, --start YYYY-MM-DD` / `-e, --end YYYY-MM-DD` — periodo explicito del reporte
+- `-d, --days N` — tamano del periodo en dias cuando no se da `--start` (default: 7)
+- `-t, --show-type` — muestra el tipo de incidencia (Historia/Error) por ticket
+- `-S, --show-status` — muestra el estado de Jira por ticket
+- `-H, --hide-due-date` — oculta la fecha de vencimiento por ticket (se muestra por defecto)
+- `-m, --no-mail` — omite la generacion de la version `.mail.html`
 
 ## Ejemplo
 

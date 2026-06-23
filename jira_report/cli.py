@@ -30,6 +30,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("csv_path", type=Path, help="Path to the Jira CSV export.")
     parser.add_argument(
+        "-o",
         "--output",
         type=Path,
         default=Path("reports/output"),
@@ -39,37 +40,44 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "-s",
         "--start",
         type=_parse_date,
         help="Window start date (YYYY-MM-DD). Defaults to --end minus --days.",
     )
     parser.add_argument(
+        "-e",
         "--end",
         type=_parse_date,
         help="Window end date (YYYY-MM-DD), inclusive. Defaults to today.",
     )
     parser.add_argument(
+        "-d",
         "--days",
         type=int,
         default=7,
         help="Size of the window in days when --start is not given (default: %(default)s).",
     )
     parser.add_argument(
+        "-t",
         "--show-type",
         action="store_true",
         help="Include the issue type (Feature/Bug) next to each ticket. Off by default.",
     )
     parser.add_argument(
+        "-S",
         "--show-status",
         action="store_true",
         help="Include the Jira status next to each ticket. Off by default.",
     )
     parser.add_argument(
+        "-H",
         "--hide-due-date",
         action="store_true",
         help="Hide the due date next to each ticket. Shown by default.",
     )
     parser.add_argument(
+        "-m",
         "--no-mail",
         action="store_true",
         help="Skip generating the mail-friendly HTML version.",
