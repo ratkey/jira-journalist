@@ -42,13 +42,17 @@ def build_report_data(
         if ticket.status == EXCLUDED_STATUS:
             continue
 
-        window_date = ticket.window_date
-        if window_date is None or not (window_start <= window_date <= window_end):
-            continue
-
         if ticket.is_in_progress:
+            # Show any ticket actively in progress during the window, including
+            # long-running ones that started earlier and are still open.
+            if not ticket.overlaps_window(window_start, window_end):
+                continue
             in_progress_by_assignee.setdefault(ticket.assignee, []).append(ticket)
         else:
+            # Done tickets count toward the window they were completed (due) in.
+            window_date = ticket.window_date
+            if window_date is None or not (window_start <= window_date <= window_end):
+                continue
             done_by_type.setdefault(ticket.issue_type, []).append(ticket)
 
     for bucket in in_progress_by_assignee.values():

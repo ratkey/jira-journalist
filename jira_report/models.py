@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 
 
@@ -43,12 +43,27 @@ class Ticket:
 
     @property
     def window_date(self) -> datetime | None:
-        """Date used to test whether this ticket falls in the report window.
+        """Date used to sort this ticket within its report bucket.
 
-        In-progress tickets are checked against their start date (when work
-        began); everything else is checked against its due date.
+        In-progress tickets are keyed on their start date (when work began);
+        everything else on its due date.
         """
         return self.start_date if self.is_in_progress else self.due_date
+
+    def overlaps_window(self, window_start: datetime, window_end: datetime) -> bool:
+        """Whether this ticket's start→due span intersects the report window.
+
+        Used for in-progress tickets: a long-running ticket that began before
+        the window but is still being worked on (due on or after the window
+        start) is active during the window and belongs in the report, not just
+        tickets that happened to start inside it. Missing dates fall back to
+        the other endpoint.
+        """
+        start = self.start_date or self.due_date
+        end = self.due_date or self.start_date
+        if start is None or end is None:
+            return False
+        return start <= window_end and end >= window_start
 
     def progress(self, as_of: datetime) -> float | None:
         """Percentage of the start-to-due window elapsed as of `as_of`.
@@ -59,7 +74,13 @@ class Ticket:
         if self.start_date is None or self.due_date is None:
             return None
 
-        total = (self.due_date - self.start_date).total_seconds()
+        # Jira due dates are inclusive calendar days: a ticket due 06/30 has
+        # until the end of 06/30. Extend the window to the end of the due day
+        # so a ticket that starts today and is due tomorrow isn't reported as
+        # 100% before its due day has even arrived.
+        window_close = self.due_date + timedelta(days=1)
+
+        total = (window_close - self.start_date).total_seconds()
         if total <= 0:
             return 100.0
 
